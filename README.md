@@ -165,13 +165,13 @@ The instructions below describe the steps to follow to successfully [install](#i
     privateusername@privatemachine:~$ scp -rp <directory> <username>@login.genome.au.dk:~/<location>
     ```
 
-3. When performing a long-running process (or task), e.g. a PyPSA-Eur model, on a remote machine, e.g. GenomeDK, the capability to persist a session when the connection to the machine drops for whatever the reason becomes important (otherwise all the work done by the process in the meantime will be lost). To that end, a tool named [screen](https://en.wikipedia.org/wiki/GNU_Screen) is very useful given its capability of persisting a session to a remote machine even when the connection is no longer available. To persist a session using `screen`, execute the following:
+3. When performing a long-running process (or task), e.g. a PyPSA-Eur model, on a remote machine, e.g. GenomeDK, the capability to persist a session when the connection to the machine drops for whatever the reason becomes important (otherwise all the work done by the process in the meantime will be lost). To that end, a tool named [screen](https://en.wikipedia.org/wiki/GNU_Screen) is very useful given its capability of persisting a session to a remote machine even when the connection to it is no longer available. To persist a session using `screen`, execute the following:
 
     ```bash
     username@genomedkbackend:~$ screen
     ```
 
-   This will make `screen` to be in the background and return to the terminal. The user may then launch a long-running process and press `Ctrl+a` followed by `d` afterwards. Pressing this keys sequence will: 1) detach the process, 2) display information about the detachment (e.g. `23625.pts-0.username (04/28/2023 09:36:05 AM) (Attached)`) and 3) return to the terminal. The session will be preserved now even when the connection to the remote machine is lost. To reattach to the session, log in to the remote machine and execute the following (replace `session_id` with the number displayed upon detaching the session - e.g. `23625`):
+   This will make `screen` to be in the background and return to the terminal. The user may then launch a long-running process and press `Ctrl+a` followed by `d` afterwards. Pressing this keys sequence will: 1) detach the process, 2) display information about the detachment (e.g. `23625.pts-0.username (04/28/2023 09:36:05 AM) (Attached)`) and 3) return to the terminal. The session is preserved now even when the connection to the remote machine is lost. To reattach to the session (i.e. to see it again), log in to the remote machine and execute the following (replace `<session_id>` with the number displayed upon detaching the session - e.g. `23625`):
 
     ```bash
     username@genomedkbackend:~$ screen -r <session_id>
@@ -180,6 +180,6 @@ The instructions below describe the steps to follow to successfully [install](#i
 
 ## Support
 
-The present notes are actively maintained by the Energy Systems Group at Aarhus University (Denmark). Please open a ticket [here](https://github.com/ricnogfer/pypsa-in-genomedk/issues) in case something is missing, incomplete, outdated or incorrect.
+The present notes are actively maintained by the Energy Systems Group at [Aarhus University](https://www.au.dk) (Denmark). Please open a ticket [here](https://github.com/ricnogfer/pypsa-in-genomedk/issues) in case something is missing, incomplete, outdated or incorrect.
 
 
