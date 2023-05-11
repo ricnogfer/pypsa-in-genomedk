@@ -85,7 +85,13 @@ The instructions below describe the steps to follow to successfully [install](#i
     username@genomedkfrontend:~/workspace$ cd pypsa-eur
     ```
 
-14. Create an Anaconda environment tailored for PyPSA-Eur by executing the following (this might take a while to complete):
+14. Copy PyPSA-Eur default configuration file `config.default.yaml` (found in directory `config`) to file `config.yaml` by executing the following:
+
+    ```bash
+    username@genomedkfrontend:~/workspace/pypsa-eur$ cp config/config.default.yaml config/config.yaml
+    ```
+
+15. Create an Anaconda environment tailored for PyPSA-Eur by executing the following (this might take a while to complete):
 
     ```bash
     username@genomedkfrontend:~/workspace/pypsa-eur$ conda env create -f envs/environment.yaml
@@ -114,22 +120,16 @@ The instructions below describe the steps to follow to successfully [install](#i
     username@genomedkbackend:~$ cd workspace/pypsa-eur
     ```
 
-4. Activate the Anaconda environment tailored for PyPSA-Eur (created in step `14` of the [installation](#install) procedure) by executing the following:
+4. Set the relevant configuration options in file `config.yaml` (copied in step `14` of the [installation](#install) procedure) with appropriate values representing the model to run in GenomeDK - see file [config.default.yaml](https://github.com/PyPSA/pypsa-eur/blob/master/config/config.default.yaml) to get an enumeration of the configuration options available (a thorough explanation about these can be found [here](https://pypsa-eur.readthedocs.io/en/latest/configuration.html)). Some configuration options that are usually set with new values are `run:name`, `scenario:ll`, `scenario:clusters` and `scenario:sector_opts`, to name a few. In addition, setting configuration option `run:shared_resources` to `true` may be a good idea to avoid downloading and processing the same resources every time a new run is launched (otherwise the run will take additional time to complete).
+
+
+5. Activate the Anaconda environment tailored for PyPSA-Eur (created in step `15` of the [installation](#install) procedure) by executing the following:
 
     ```bash
     username@genomedkbackend:~/workspace/pypsa-eur$ conda activate pypsa-eur
     ```
 
-5. Copy PyPSA-Eur default configuration file `config.default.yaml` (found in PyPSA-Eur directory `config`) to file `config.yaml` by executing the following:
-
-    ```bash
-    username@genomedkbackend:~/workspace/pypsa-eur$ cp config/config.default.yaml config/config.yaml
-    ```
-
-6. Set the relevant configuration options in file `config.yaml` (found in PyPSA-Eur directory `config`) with appropriate values representing the model to run in GenomeDK - see file [config.default.yaml](https://github.com/PyPSA/pypsa-eur/blob/master/config/config.default.yaml) to get an enumeration of the configuration options available (a thorough explanation about these can be found [here](https://pypsa-eur.readthedocs.io/en/latest/configuration.html)). Some configuration options that are usually set with new values are `run:name`, `scenario:ll`, `scenario:clusters` and `scenario:sector_opts`, to name a few. In addition, setting configuration option `run:shared_resources` to `true` may be a good idea to avoid downloading and processing the same resources every time a new run is launched (otherwise the run will take additional time to complete).
-
-
-7. Run PyPSA-Eur model based on the configuration done in step `6` by executing the following (this might take a while to complete, especially the first time it runs):
+6. Run PyPSA-Eur model based on the configuration done in step `4` by executing the following (this might take a while to complete, especially the first time it runs):
 
     ```bash
     username@genomedkbackend:~/workspace/pypsa-eur$ snakemake -call all -j1
