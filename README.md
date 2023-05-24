@@ -1,11 +1,11 @@
-# Running PyPSA-Eur in GenomeDK
+# PyPSA-Eur in GenomeDK
 
 
 ## Description
-The instructions below describe the steps to follow to successfully [install](#install) the [PyPSA-Eur](https://pypsa-eur.readthedocs.io) framework (version 0.8.0 or higher) and to [run](#run) models based on it in [GenomeDK](https://genome.au.dk), a high-performance computing facility for the life sciences in Denmark serving scientists, students and SMEs. Although GenomeDK was primarily meant for the life sciences, this facility is equally well suited to run any CPU-intensive task including energy system models.
+The instructions below describe the steps to follow to successfully [install](#installation) the [PyPSA-Eur](https://pypsa-eur.readthedocs.io) framework (version 0.8.0 or higher) and to [run](#usage) models based on it in [GenomeDK](https://genome.au.dk), a high-performance computing facility for the life sciences in Denmark serving scientists, students and SMEs. Although GenomeDK was primarily meant for the life sciences, this facility is equally well suited to run any CPU-intensive task including energy system models.
 
 
-## Install
+## Installation
 1. Request an account to get access to GenomeDK [here](https://console.genome.au.dk/user-requests/create).
 
 2. Once the account has been created (an email will be sent to the user announcing this fact), log in to GenomeDK through [ssh](https://en.wikipedia.org/wiki/Secure_Shell) by opening a terminal and executing the following (replace `<username>` with the information provided upon requesting an account in step `1`):
@@ -50,7 +50,7 @@ The instructions below describe the steps to follow to successfully [install](#i
     username@genomedkfrontend:~/workspace$ tar -xzvf gurobi<version>_linux64.tar.gz
     ```
 
-9. To be able to run Gurobi, a license is required. Fortunately, the Aarhus University maintains a server (`licsrv01.uni.au.dk`) which contains licenses for disparate software packages/tools/systems used in this institution, including Gurobi. To enable Gurobi consuming the necessary license, a file containing information on how to access the server is needed by this tool. Therefore, create such file by executing the following (this will create a file named `gurobi.lic` containing the information needed to access the server):
+9. To be able to run Gurobi, a license is required. Fortunately, the [Aarhus University](https://www.au.dk) maintains a server (`licsrv01.uni.au.dk`) which contains licenses for disparate software packages/tools/systems used in this institution, including Gurobi. To enable Gurobi consuming the necessary license, a file containing information on how to access the server is needed by this tool. Therefore, create such file by executing the following (this will create a file named `gurobi.lic` containing the information needed to access the server):
 
     ```bash
     username@genomedkfrontend:~/workspace$ echo -e "TOKENSERVER=licsrv01.uni.au.dk\nPORT=41954" > gurobi.lic
@@ -65,7 +65,7 @@ The instructions below describe the steps to follow to successfully [install](#i
     export LD_LIBRARY_PATH=${GUROBI_HOME}/lib
     ```
 
-    For the addition to the `.bashrc` file to take effect on the current terminal execute `source ~/.bashrc` or, alternatively, close the terminal and open a new one (every time a new terminal is opened, the `.bashrc` file is read).
+    Execute `source ~/.bashrc` for the addition to the `.bashrc` file to take effect on the current terminal or, alternatively, close the terminal and open a new one (every time a new terminal is opened, the file is read again).
 
 11. Install Gurobi Python package in Anaconda by executing the following (replace `<version>` with the version of Gurobi downloaded in step `7`):
 
@@ -98,9 +98,9 @@ The instructions below describe the steps to follow to successfully [install](#i
     ```
 
 
-## Run
+## Usage
 
-1. Log in to GenomeDK through [ssh](https://en.wikipedia.org/wiki/Secure_Shell) by opening a terminal and executing the following (replace `<username>` with the information provided upon requesting an account in step `1` of the [installation](#install) procedure):
+1. Log in to GenomeDK through [ssh](https://en.wikipedia.org/wiki/Secure_Shell) by opening a terminal and executing the following (replace `<username>` with the information provided upon requesting an account in step `1` of the [installation](#installation) procedure):
 
     ```bash
     privateusername@privatemachine:~$ ssh <username>@login.genome.au.dk
@@ -120,10 +120,10 @@ The instructions below describe the steps to follow to successfully [install](#i
     username@genomedkbackend:~$ cd workspace/pypsa-eur
     ```
 
-4. Set the relevant configuration options in file `config.yaml` (copied in step `14` of the [installation](#install) procedure) with appropriate values representing the model to run in GenomeDK - see file [config.default.yaml](https://github.com/PyPSA/pypsa-eur/blob/master/config/config.default.yaml) to get an enumeration of the configuration options available (a thorough explanation about these can be found [here](https://pypsa-eur.readthedocs.io/en/latest/configuration.html)). Some configuration options that are usually set with new values are `run:name`, `scenario:ll`, `scenario:clusters` and `scenario:sector_opts`, to name a few. In addition, setting configuration option `run:shared_resources` to `true` may be a good idea to avoid downloading and processing the same resources every time a new run is launched (otherwise the run will take additional time to complete).
+4. Set the relevant configuration options in file `config.yaml` (copied in step `14` of the [installation](#installation) procedure) with appropriate values representing the model to run in GenomeDK - see file [config.default.yaml](https://github.com/PyPSA/pypsa-eur/blob/master/config/config.default.yaml) to get an enumeration of the configuration options available (a thorough explanation about these can be found [here](https://pypsa-eur.readthedocs.io/en/latest/configuration.html)). Some configuration options that are usually set with new values are `run:name`, `scenario:ll`, `scenario:clusters` and `scenario:sector_opts`, to name a few. In addition, setting configuration option `run:shared_resources` to `true` may be a good idea to avoid downloading and processing the same resources every time a new run is launched (otherwise the run will take additional time to complete).
 
 
-5. Activate the Anaconda environment tailored for PyPSA-Eur (created in step `15` of the [installation](#install) procedure) by executing the following:
+5. Activate the Anaconda environment tailored for PyPSA-Eur (created in step `15` of the [installation](#installation) procedure) by executing the following:
 
     ```bash
     username@genomedkbackend:~/workspace/pypsa-eur$ conda activate pypsa-eur
@@ -144,7 +144,7 @@ The instructions below describe the steps to follow to successfully [install](#i
     privateusername@privatemachine:~$ ssh-keygen
     ```
 
-   After generating a public key, copy it to GenomeDK by executing the following (replace `<username>` with the information provided upon requesting an account in step `1` of the [installation](#install) procedure):
+   After generating a public key, copy it to GenomeDK by executing the following (replace `<username>` with the information provided upon requesting an account in step `1` of the [installation](#installation) procedure):
 
     ```bash
     privateusername@privatemachine:~$ sh-copy-id -i ~/.ssh/id_rsa <username>@login.genome.au.dk
@@ -153,13 +153,13 @@ The instructions below describe the steps to follow to successfully [install](#i
    From this point on, every time a connection is made to GenomeDK - through, e.g., `ssh` or `scp` - no user credentials are asked and the connection will be made transparently.
 
 
-2. To copy files from a machine to GenomeDK, the tool [scp](https://en.wikipedia.org/wiki/Secure_copy_protocol) may be useful in this task due to its simplicity and ubiquity in all Linux distributions. Therefore, to copy a file to GenomeDK execute the following (replace `<file>` with the name of the file to copy, `<username>` with the information provided upon requesting an account in step `1` of the [installation](#install) procedure and `<location>` with the location in the user home in GenomeDK where the file will be copied to):
+2. To copy files from a machine to GenomeDK, the tool [scp](https://en.wikipedia.org/wiki/Secure_copy_protocol) may be useful in this task due to its simplicity and ubiquity in all Linux distributions. Therefore, to copy a file to GenomeDK execute the following (replace `<file>` with the name of the file to copy, `<username>` with the information provided upon requesting an account in step `1` of the [installation](#installation) procedure and `<location>` with the location in the user home in GenomeDK where the file will be copied to):
 
     ```bash
     privateusername@privatemachine:~$ scp <file> <username>@login.genome.au.dk:~/<location>
     ```
 
-   Moreover, in case of need to copy an entire directory (including sub-directories) execute the following (replace `<directory>` with the name of the directory to copy, `<username>` with the information provided upon requesting an account in step `1` of the [installation](#install) procedure and `<location>` with the location in the user home in GenomeDK where the directory will be copied to):
+   Moreover, in case of need to copy an entire directory (including sub-directories) execute the following (replace `<directory>` with the name of the directory to copy, `<username>` with the information provided upon requesting an account in step `1` of the [installation](#installation) procedure and `<location>` with the location in the user home in GenomeDK where the directory will be copied to):
 
     ```bash
     privateusername@privatemachine:~$ scp -rp <directory> <username>@login.genome.au.dk:~/<location>
@@ -180,6 +180,6 @@ The instructions below describe the steps to follow to successfully [install](#i
 
 ## Support
 
-The present notes are actively maintained by the Energy Systems Group at [Aarhus University](https://www.au.dk) (Denmark). Please open a ticket [here](https://github.com/ricnogfer/pypsa-in-genomedk/issues) in case something is missing, incomplete, outdated or incorrect.
+The present notes are actively maintained by the Energy Systems Group at Aarhus University (Denmark). Please open a ticket [here](https://github.com/ricnogfer/pypsa-in-genomedk/issues) in case something is missing, incomplete, outdated or incorrect.
 
 
