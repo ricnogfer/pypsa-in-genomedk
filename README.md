@@ -138,7 +138,20 @@ The instructions below describe the steps to follow to successfully [install](#i
 
 ## Tips & Tricks
 
-1. To avoid having to provide user credentials every time a connection to GenomeDK is made, setting up a public key authentication in this machine is a good idea. First, generate a public key using a tool named [ssh-keygen](https://en.wikipedia.org/wiki/Ssh-keygen) by executing the following (press ENTER when asked questions by `ssh-keygen` as the default values are appropriate for this case):
+1. To avoid slowing down GenomeDK due to Gurobi constantly reading and writing temporary files, setting up the temporary directory with scratch memory is a good idea. Although in PyPSA-Eur default configuration file `config.default.yaml` (found in directory `config`) there is an option (`solving:tmpdir`) to perform such set up, in practice it has no effect given that the option has been disabled. Therefore, the workaround to this is to add an argument in function `n.optimize()` (found in Python script `solve_network.py`) as follows:
+
+    ```python
+    from pathlib import Path
+
+    tmpdir = "/scratch/%s" % os.environ["SLURM_JOB_ID"]
+
+    if tmpdir_scratch:
+       Path(tmpdir_scratch).mkdir(parents = True, exist_ok = True)
+
+    status, condition = n.optimize(solver_name = solver_name, model_kwargs = {"solver_dir": tmpdir}, extra_functionality = extra_functionality, **solver_options, **kwargs)
+    ```
+
+2. To avoid having to provide user credentials every time a connection to GenomeDK is made, setting up a public key authentication in this machine is a good idea. First, generate a public key using a tool named [ssh-keygen](https://en.wikipedia.org/wiki/Ssh-keygen) by executing the following (press ENTER when asked questions by `ssh-keygen` as the default values are appropriate for this case):
 
     ```bash
     privateusername@privatemachine:~$ ssh-keygen
@@ -152,8 +165,7 @@ The instructions below describe the steps to follow to successfully [install](#i
 
    From this point on, every time a connection is made to GenomeDK - through, e.g., `ssh` or `scp` - no user credentials are asked and the connection will be made transparently.
 
-
-2. To copy files from a machine to GenomeDK, the tool [scp](https://en.wikipedia.org/wiki/Secure_copy_protocol) may be useful in this task due to its simplicity and ubiquity in all Linux distributions. Therefore, to copy a file to GenomeDK execute the following (replace `<file>` with the name of the file to copy, `<username>` with the information provided upon requesting an account in step `1` of the [installation](#installation) procedure and `<location>` with the location in the user home in GenomeDK where the file will be copied to):
+3. To copy files from a machine to GenomeDK, the tool [scp](https://en.wikipedia.org/wiki/Secure_copy_protocol) may be useful in this task due to its simplicity and ubiquity in all Linux distributions. Therefore, to copy a file to GenomeDK execute the following (replace `<file>` with the name of the file to copy, `<username>` with the information provided upon requesting an account in step `1` of the [installation](#installation) procedure and `<location>` with the location in the user home in GenomeDK where the file will be copied to):
 
     ```bash
     privateusername@privatemachine:~$ scp <file> <username>@login.genome.au.dk:~/<location>
@@ -165,7 +177,7 @@ The instructions below describe the steps to follow to successfully [install](#i
     privateusername@privatemachine:~$ scp -rp <directory> <username>@login.genome.au.dk:~/<location>
     ```
 
-3. When performing a long-running process (or task), e.g. a PyPSA-Eur model, on a remote machine, e.g. GenomeDK, the capability to persist a session when the connection to the machine drops for whatever the reason becomes important (otherwise all the work done by the process in the meantime will be lost). To that end, a tool named [screen](https://en.wikipedia.org/wiki/GNU_Screen) is very useful given its capability of persisting a session to a remote machine even when the connection to it is no longer available. To persist a session using `screen`, execute the following:
+4. When performing a long-running process (or task), e.g. a PyPSA-Eur model, on a remote machine, e.g. GenomeDK, the capability to persist a session when the connection to the machine drops for whatever the reason becomes important (otherwise all the work done by the process in the meantime will be lost). To that end, a tool named [screen](https://en.wikipedia.org/wiki/GNU_Screen) is very useful given its capability of persisting a session to a remote machine even when the connection to it is no longer available. To persist a session using `screen`, execute the following:
 
     ```bash
     username@genomedkbackend:~$ screen
