@@ -138,7 +138,7 @@ The instructions below describe the steps to follow to successfully [install](#i
 
 ## Tips & Tricks
 
-1. To avoid slowing down GenomeDK due to Gurobi constantly reading and writing temporary files, setting up the temporary directory with scratch memory is a good idea. Although in PyPSA-Eur default configuration file `config.default.yaml` (found in directory `config`) there is an option (`solving:tmpdir`) to perform such set up, in practice it has no effect given that the option has been disabled. Therefore, the workaround to this is to add an argument in function `n.optimize()` (found in Python script `solve_network.py`) as follows:
+1. To avoid slowing down GenomeDK due to Gurobi constantly reading and writing temporary files, assigning [scratch memory](https://en.wikipedia.org/wiki/Scratchpad_memory) to the temporary directory is a good idea. Although option `solving:tmpdir` (found in PyPSA-Eur default configuration file `config.default.yaml` in directory `config`) was originally implemented with this idea in mind, in practice it has no effect given that the option is currently disabled. Therefore, the workaround to this is to add an argument in function `n.optimize()` (found in the Python script `solve_network.py` in directory `script`) as follows:
 
     ```python
     from pathlib import Path
