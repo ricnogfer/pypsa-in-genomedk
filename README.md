@@ -160,7 +160,7 @@ The instructions below describe the steps to follow to successfully [install](#i
    After generating a public key, copy it to GenomeDK by executing the following (replace `<username>` with the information provided upon requesting an account in step `1` of the [installation](#installation) procedure):
 
     ```bash
-    privateusername@privatemachine:~$ sh-copy-id -i ~/.ssh/id_rsa <username>@login.genome.au.dk
+    privateusername@privatemachine:~$ ssh-copy-id -i ~/.ssh/id_rsa <username>@login.genome.au.dk
     ```
 
    From this point on, every time a connection is made to GenomeDK - through, e.g., `ssh` or `scp` - no user credentials are asked and the connection will be made transparently.
