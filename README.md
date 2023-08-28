@@ -135,6 +135,8 @@ The instructions below describe the steps to follow to successfully [install](#i
     username@genomedkbackend:~/workspace/pypsa-eur$ snakemake -call all -j1
     ```
 
+   Of note, an error may occur (`yaml.reader.ReaderError: unacceptable character #x009f: special characters are not allow`) when using tools such as [PuTTY](https://en.wikipedia.org/wiki/PuTTY) or [WSL](https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux) (from Windows) to connect to GenomeDK and perform this step. The solution to this is to use `ssh` (from a Linux distribution) to connect to the machine instead.
+
 
 ## Tips & Tricks
 
