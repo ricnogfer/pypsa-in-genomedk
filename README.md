@@ -2,7 +2,7 @@
 
 
 ## Description
-The instructions below describe the steps to follow to successfully [install](#installation) the [PyPSA-Eur](https://pypsa-eur.readthedocs.io) framework (version 0.8.0 or higher) and to [run](#usage) models based on it in [GenomeDK](https://genome.au.dk), a high-performance computing facility for the life sciences in Denmark serving scientists, students and SMEs. Although GenomeDK was primarily meant for the life sciences, this facility is equally well suited to run any CPU-intensive task including energy system models.
+The instructions below describe the steps to follow to successfully [install](#installation) the [PyPSA-Eur](https://pypsa-eur.readthedocs.io) framework (version 0.8.1 or higher) and to [run](#usage) models based on it in [GenomeDK](https://genome.au.dk), a high-performance computing facility for the life sciences in Denmark serving scientists, students and SMEs. Although GenomeDK was primarily meant for the life sciences, this facility is equally well suited to run any CPU-intensive task including energy system models.
 
 
 ## Installation
@@ -140,17 +140,36 @@ The instructions below describe the steps to follow to successfully [install](#i
 
 ## Tips & Tricks
 
-1. To avoid slowing down GenomeDK due to Gurobi constantly reading and writing temporary files, assigning [scratch memory](https://en.wikipedia.org/wiki/Scratchpad_memory) to the temporary directory is a good idea. Although option `solving:tmpdir` (found in PyPSA-Eur default configuration file `config.default.yaml` in directory `config`) was originally implemented with this idea in mind, in practice it has no effect given that the option is currently disabled. Therefore, the workaround to this is to add an argument in function `n.optimize()` (found in the Python script `solve_network.py` in directory `script`) as follows:
+1. To avoid slowing down GenomeDK due to Gurobi constantly reading and writing temporary files, assigning [scratch memory](https://en.wikipedia.org/wiki/Scratchpad_memory) to the temporary directory is a good idea. Although option `solving:tmpdir` (found in PyPSA-Eur default configuration file `config.default.yaml` in directory `config`) was originally implemented with this idea in mind, in practice it has no effect given that the option is currently disabled. Therefore, the workaround to this is to add an argument when calling function `n.optimize` or `n.optimize.optimize_transmission_expansion_iteratively` (in function `solve_network` found in the Python script `solve_network.py`) that specifies the temporary directory to use as follows:
 
     ```python
     from pathlib import Path
+    import os
 
     tmpdir = "/scratch/%s" % os.environ["SLURM_JOB_ID"]
 
     if tmpdir_scratch:
        Path(tmpdir_scratch).mkdir(parents = True, exist_ok = True)
 
-    status, condition = n.optimize(solver_name = solver_name, model_kwargs = {"solver_dir": tmpdir}, extra_functionality = extra_functionality, **solver_options, **kwargs)
+    if skip_iterations:
+       status, condition = n.optimize(
+                                      solver_name=solver_name,
+                                      model_kwargs = {"solver_dir": tmpdir},
+                                      extra_functionality=extra_functionality,
+                                      **solver_options,
+                                      **kwargs,
+                                     )
+    else:
+       status, condition = n.optimize.optimize_transmission_expansion_iteratively(
+                                                                                  solver_name=solver_name,
+                                                                                  model_kwargs = {"solver_dir": tmpdir},
+                                                                                  track_iterations=track_iterations,
+                                                                                  min_iterations=min_iterations,
+                                                                                  max_iterations=max_iterations,
+                                                                                  extra_functionality=extra_functionality,
+                                                                                  **solver_options,
+                                                                                  **kwargs,
+                                                                                 )
     ```
 
 2. To avoid having to provide user credentials every time a connection to GenomeDK is made, setting up a public key authentication in this machine is a good idea. First, generate a public key using a tool named [ssh-keygen](https://en.wikipedia.org/wiki/Ssh-keygen) by executing the following (press ENTER when asked questions by `ssh-keygen` as the default values are appropriate for this case):
