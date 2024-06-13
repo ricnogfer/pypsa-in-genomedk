@@ -50,10 +50,10 @@ The instructions below describe the steps to follow to successfully [install](#i
     username@genomedkfrontend:~/workspace$ tar -xzvf gurobi<version>_linux64.tar.gz
     ```
 
-9. To be able to run Gurobi, a license is required. Fortunately, the [Aarhus University](https://www.au.dk) maintains a server (`licsrv01.uni.au.dk`) which contains licenses for disparate software packages/tools/systems used in this institution, including Gurobi. To enable Gurobi consuming the necessary license, a file containing information on how to access the server is needed by this tool. Therefore, create such file by executing the following (this will create a file named `gurobi.lic` containing the information needed to access the server):
+9. To be able to run Gurobi, a license is required. Fortunately, the [Aarhus University](https://www.au.dk) maintains a server (`gurobi.licsrv.au.dk`) which contains a license for Gurobi. To enable Gurobi consuming the necessary license, a file containing information on how to access the server is needed by this tool. Therefore, create such file by executing the following (this will create a file named `gurobi.lic` containing the information needed to access the server):
 
     ```bash
-    username@genomedkfrontend:~/workspace$ echo -e "TOKENSERVER=licsrv01.uni.au.dk\nPORT=41954" > gurobi.lic
+    username@genomedkfrontend:~/workspace$ echo -e "TOKENSERVER=gurobi.licsrv.au.dk\nPORT=41954" > gurobi.lic
     ```
 
 10. Add to the `.bashrc` file (found in the user home root in GenomeDK) the following four lines (replace `<username>` with the information provided upon requesting an account in step `1` and `<version>` with the version of Gurobi downloaded in step `7` without the `.` separating its major, minor and revision numbers):
